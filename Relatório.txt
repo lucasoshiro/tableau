@@ -1,0 +1,164 @@
+/******************************************************************************
+
+                              Relatorio - Tableau
+                        (Relatorio do programa Tableau)
+
+    por:
+    Lucas Seiki Oshiro
+    Matheus Tavares Bernardino
+
+*******************************************************************************/
+
+Ao ler da entrada padrão o sequente, são reconhecidas as expressões,e a todas
+elas é atribuído o valor verdadeiro. Espaços são descartados. Após o término da
+leitura, à última expressão (a consequência lógica) é atribuído o valor falso.
+
+As expressões, após lidas da entrada, são armazenadas na seguinte forma:
+   -tipo: indica se é um literal apenas, ou é uma composição de um operador e
+    uma ou duas expressões;
+
+   -valor: indica se a expressão é verdadeira ou falsa;
+
+   -lit: se o tipo é literal, recebe o nome do literal;
+
+   -id: caso a expressão não seja literal, indica o operador. Pode assumir os
+   valores A, O, I, N, representando, respectivamente, conjunção, disjunção,
+   implicação e negação;
+
+   -esq e dir: caso a expressão não seja literal, indicam a subexpressão ou
+   subexpressões que junto com o operador formam a expressão que está sendo
+   armazenada;
+
+Reconhecida as expressões, é montado o tableau, colocando-se todas as expressões
+em uma ArrayList. As inserções na ArrayList funcionam sempre da seguinte forma:
+   -Se a expressão for um literal, é colocada no fim da ArrayList;
+
+   -Caso não seja um literal, é colocada no início da ArrayList;
+
+Dessa forma, o ArrayList terá duas partes: o começo, só com expressões e o
+final, só com literais.
+
+Para resolver o tableau, procede-se da seguinte forma:
+   -Retira-se a primeira expressão do ArrayList, e aplica-se a expansão adequada
+   ao tipo de operação dessa expressão. (Decisão de projeto: ambas as negações
+   são consideradas alfa, uma vez que elas não irão criar um novo ramo no
+   tableau);
+
+   -Caso seja feita uma expansão alfa, são colocadas no mesmo ArrayList as duas
+   expressões. Logo após, resolve-se o ArrayList com as duas novas expressões;
+
+   -Caso seja feita uma expansão beta, cria-se um novo ArrayList idêntico ao
+   existente, e uma expressão vai para o ArrayList antigo e outra para o novo,
+   ramificando o tableau. Resolve-se o ArrayList antigo. Caso o ArrayList antigo
+   não encontre um contra-exemplo, resolve-se o novo ArrayList;
+
+   -Caso a primeira expressão seja um literal, significa que todo o ArrayList é
+   formado apenas por literais. Caso não haja contradição, os literais e suas
+   valorações são devolvidos. Caso contrário, é devolvido null, indicando que
+   houve contradição naquele ramo do tableau;
+
+Durante o processo de criação do programa, não houve nenhuma grande dificuldade
+de como criá-lo. Porém, o maior desafio foi decidir a forma como
+implementaríamos a solução do problema.
+
+Os testes foram feitos usando sequentes retirados do material complementar,
+do Jape e alguns criados pelos autores do programa. Foram feitos, então, 27
+testes, cujo resultado pode ser visto a seguir (aqui os operadores na forma .X.
+foram substituídos pelos símbolos matemáticos correspondentes para uma melhor
+visualização das entradas):
+
+
+(A → B), ((C ∨ A) → (C ∨ B))
+Válido.
+
+(A→(B∨(¬C))), ((A∧(¬B))→C)
+Inválido.
+Contra-exemplo: A=T B=F C=F
+
+(A∧(B∨C)), ((A∧B)∨(A∧C))
+Válido.
+
+((¬P)→Q), (((¬P)→(¬Q))→P)
+Válido.
+
+(P→Q), (¬Q), (¬P)
+Válido.
+
+((¬Q)→(¬P)), (P→Q)
+Válido.
+
+((¬P)∧(¬Q)), (¬(P∨Q))
+Válido.
+
+((¬P)∨(¬Q)),(¬(P∧Q))
+Válido.
+
+(P∨(Q∧R)), ((P∨Q)∧(P∨R))
+Válido.
+
+((P∨Q)∧(P∨R)), (P∨(Q∧R))
+Válido.
+
+(P∧(Q∨R)), ((P∧Q)∨(P∧R))
+Válido.
+
+((P∧Q)∨(P∧R)),(P∧(Q∨R))
+Válido.
+
+(P→Q),(Q→R),(P→R)
+Válido.
+
+((A∧B)→(C∨D)), (((¬A)∧(¬B))∧(C∨D))
+Inválido.
+Contra-exemplo: A=T B=F
+
+(A∧((¬B)→C)),(A∧((¬B)∧C))
+Inválido.
+Contra-exemplo: A=T B=T
+
+(A∧(B→C)),(A∧(B∧(¬C)))
+Inválido.
+Contra-exemplo: A=T B=F
+
+((E∧F)→G), ((E→F)→G)
+Inválido.
+Contra-exemplo: E=F G=F
+
+(E→(F→G)), ((E→F)→G)
+Inválido.
+Contra-exemplo: E=F G=F
+
+((E→F)→G),(E∧(F→G))
+Inválido.
+Contra-exemplo: E=F G=T
+
+(E), (E∧F)
+Inválido.
+Contra-exemplo: E=T F=F
+
+(E∨F),(E∧F)
+Inválido.
+Contra-exemplo: E=F F=T
+
+(¬(¬E)), E
+Válido.
+
+(B∨D), ((C∨X)∧(B∨V)), ((D∧X)∨((X∧(¬C))∨(V→B)))
+Inválido.
+Contra-exemplo: B=F C=T D=T V=T X=F
+
+(¬((B∨C)→(D∧E))), (B∨D), (E∧D)
+Inválido.
+Contra-exemplo: B=T D=F E=F
+
+((A→(¬B))∨(B→C)), (¬((A→(¬B))∧(B→C))), (A→(¬C))
+Inválido.
+Contra-exemplo: A=T B=T C=T
+
+((C∧(X∨D))→(E∨K)), (X→K)
+Inválido.
+Contra-exemplo: C=F X=T K=F
+
+(((B∨C)∧(¬D))∨X), ((¬X)∨(D∨(B∧C)))
+Inválido.
+Contra-exemplo: B=F C=T D=F X=T

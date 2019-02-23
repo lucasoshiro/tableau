@@ -1,0 +1,47 @@
+/******************************************************************************
+
+                            Manual - Tableau
+                 (Manual de utilização do programa Tableau)
+
+    por:
+    Lucas Seiki Oshiro
+    Matheus Tavares Bernardino
+
+*******************************************************************************/
+
+O programa lê, da entrada padrão, um sequente e, na saida padrão, imprime se
+este é válido ou inválido.
+
+A forma como o sequente deve ser escrito é:
+        A1, A2, A3, ... , An, B
+Onde, A1 ... An são as premissas e B é uma consequẽncia lógica.
+
+A entrada das premissas e da consequencia lógica deve ser escrita em uma única
+linha e podem ser utilizados quantos espaços se quiser utilizar antes, entre ou
+depois de cada premissa e da consequencia lógica. Também podem haver quantos
+espaços se quiser (e em qualquer posição) no meio de cada premissa e/ou no meio
+da consequência lógica.
+
+Todas as formulas devem estar completamente parentetizadas, com excessão de
+atómos, que podem ser escritos tanto parentetizados como não. Por exemplo, todas
+as entradas abaixo serão aceitas pelo programa e terão resultados corretos:
+    (A),(A.I.B),(B)
+     A, (A.I.B), B
+     A, (A.I.B),(B)
+     A,((A).I.(B)),B
+
+Sendo S e U, atomos ou formulas, são válidos os seguintes conectivos:
+    (S.A.U) - S e U
+    (S.O.U) - S ou U
+    (S.I.U) - S implica U
+    (.N.U)  - não U
+
+A saída do programa será uma linha contendo a string "Válido." ou "Inválido.",
+para indicar se a entrada dada constitui ou não um sequente válido. Se inválido,
+será impressa ainda, uma linha a mais indicando um contra-exemplo da forma:
+    A=X0 B=X1 C=X2 ...
+onde A,B,C, ... são os átomos da entrada e X0,X1,X2, ... são os valores do
+contra-exemplo, ou seja, um conjunto de valores para os átomos que torne o
+sequente inválido, podendo ser eles T (para Verdadeiro) e F (para falso).
+Neste conjunto de valores, se existem átomos cuja valoração tanto positiva como
+negativa, no conjunto, invalidem o sequente, estes átomos não são impressas.
